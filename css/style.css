@@ -18,7 +18,23 @@ body {
 }
 
 .game-square {
+    cursor: pointer;
     height: 100%;
     width: 100%;
     border: 1px solid black;
+}
+
+.mark-x {
+    background-image: url("./cross.svg");
+}
+
+.mark-o {
+    background-image: url("./circle.svg");
+}
+
+.mark-x,
+.mark-o {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70%;
 }
