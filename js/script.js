@@ -1,44 +1,56 @@
 // Gameboard use cases:
 // - New game
 // - Get board
+// - Render board
 // - Add a move
 // - Announce winnder or draw?
-const Gameboard = (() => {
-    let gameboard =  [[null, null, null],
-                      [null, null, null],
-                      [null, null, null]];
+const Game = (() => {
 
-    const newGame = () => {
-        gameboard = [[null, null, null],
-                     [null, null, null],
-                     [null, null, null]];
-    };
-
-    const getBoard = () => console.table(gameboard);
-
-    let moveCounter = {
-        counter: 0,
-        addCount: () => {
-            moveCounter.counter++;
+    let gameboard = {
+        gameboard: [],
+        init: function() {
+            this.newGame();
+            this.cacheDom();
+            this.render();
         },
+        newGame: function() {
+            this.gameboard = [[null, null, null],
+                              [null, null, null],
+                              [null, null, null]];
+        },
+        cacheDom: function(){
+            this.htmlBoard = document.querySelector('.gameboard');
+            this.htmlSquare = document.querySelectorAll('.game-square');
+        },
+        render: function() {
+            for (let i = 0; i < this.gameboard.length; i++) {
+                for (let j = 0; j < this.gameboard[i].length; j++) {
+                    let c = i === 0 ? 0 : i === 1 ? 3 : 6;
+                    this.htmlSquare[c + j].textContent = this.gameboard[i][j];
+                }
+            }   
+        },
+        moveCounter: {
+            counter: 0,
+            addCount: function() {
+                this.counter++;
+            },
+        },
+        addMove: function(row, column) {
+            if (this.gameboard[row][column] === null) {
+                let mark = (this.moveCounter.counter % 2 === 0) ? 'X' : 'O'
+                this.gameboard[row][column] = mark;
+
+                this.moveCounter.addCount();
+                this.render();
+            }
+        }
+
+
     }
 
-    const addMove = (row, column) => {
-        if (moveCounter.counter % 2 === 0) {
-            console.log(`p2 turn!`)
-            gameboard[row][column] = 'X'
-        } else {
-            console.log(`p1 turn!`)
-            gameboard[row][column] = 'O';
-        }
-        moveCounter.addCount()
-    };
+    gameboard.init();
 
-    return {
-        newGame,
-        getBoard,
-        addMove,
-    };
 })();
 
 
@@ -49,11 +61,3 @@ const Gameboard = (() => {
 const Player = (name, mark, type) => {
     return {name, mark, type};
 }
-
-const p1 = Player('Player 1', 'X' ,'player');
-const p2 = Player('Player 2', 'O', 'ai');
-Gameboard.addMove(1, 1);
-Gameboard.addMove(0, 2);
-Gameboard.addMove(0, 1);
-
-Gameboard.getBoard();
