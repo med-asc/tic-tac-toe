@@ -25,10 +25,18 @@ const Game = (() => {
             // Display gameboard and hide new game btn
             this.htmlBoard.classList.remove('display-none');
             this.htmlgameSelect.classList.add('display-none');
+            // Reset board
+            for (let i = 0; i < this.htmlSquares.length; i++) {
+                this.htmlSquares[i].classList.remove('mark-x', 'mark-o');
+            }
+            // Reset counter
+            this.moveCounter.counter = 0;
             // Reset the array
             this.gameboard = [[null, null, null],
                               [null, null, null],
                               [null, null, null]];
+            this.gameOver = false
+            this.render();
         },
         bindEvents: function() {
             this.htmlSquares.forEach(square => {
@@ -45,6 +53,7 @@ const Game = (() => {
             this.htmlRestart.addEventListener('click', () => {
                 this.htmlgameSelect.classList.remove('display-none');
                 this.htmlBoard.classList.add('display-none');
+                this.htmlMessage.textContent = '';
             });
 
         },
