@@ -10,20 +10,25 @@ const Game = (() => {
         gameboard: [],
         gameOver: false,
         init: function() {
-            this.newGame();
             this.cacheDom();
-            this.render();
             this.bindEvents();
-        },
-        newGame: function() {
-            this.gameboard = [[null, null, null],
-                              [null, null, null],
-                              [null, null, null]];
         },
         cacheDom: function(){
             this.htmlBoard = document.querySelector('.gameboard');
             this.htmlSquares = document.querySelectorAll('.game-square');
-            this.htmlMessage = document.querySelector('.game-message')
+            this.htmlMessage = document.querySelector('.game-message');
+            this.htmlgameSelect = document.querySelector('.game-select');
+            this.htmlNewGame = document.querySelector('.btn-new-game');
+            this.htmlRestart = document.querySelector('.btn-restart');
+        },
+        newGame: function() {
+            // Display gameboard and hide new game btn
+            this.htmlBoard.classList.remove('display-none');
+            this.htmlgameSelect.classList.add('display-none');
+            // Reset the array
+            this.gameboard = [[null, null, null],
+                              [null, null, null],
+                              [null, null, null]];
         },
         bindEvents: function() {
             this.htmlSquares.forEach(square => {
@@ -32,6 +37,16 @@ const Game = (() => {
                     this.addMove(row, column);
                 });
             });
+
+            this.htmlNewGame.addEventListener('click', () => {
+                this.newGame();
+            });
+
+            this.htmlRestart.addEventListener('click', () => {
+                this.htmlgameSelect.classList.remove('display-none');
+                this.htmlBoard.classList.add('display-none');
+            });
+
         },
         render: function() {
             for (let i = 0; i < this.gameboard.length; i++) {

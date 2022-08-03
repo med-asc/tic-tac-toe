@@ -8,12 +8,77 @@ body {
     grid-template-rows: 80px 1fr;
     justify-items: center;
     align-items: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.player-selection {
+    display: grid;
+    grid-template-columns: 1fr min-content 1fr;
+    grid-template-rows: 50px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    grid-template-areas:
+    "mark-x vs mark-o"
+    "player-data-x vs player-data-o"
+    "button button button";
+}
+
+.btn {
+    padding: 16px 24px;
+    border: none;
+    display: block;
+    background-color: rgb(43, 18, 207);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.btn-new-game {
+    grid-area: button;
+}
+
+.btn-restart {
+    grid-area: 4 / 2;
+}
+
+.player-ai {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
+.player-mark-x {
+    background-image: url("./cross.svg");
+    grid-area: mark-x;
+}
+
+.player-mark-o {
+    background-image: url("./circle.svg");
+    grid-area: mark-o;
+}
+
+.player-vs {
+    grid-area: vs;
+}
+
+.player-data input{
+    padding: 8px;
+    font-family: inherit;
+}
+
+.player-mark-x,
+.player-mark-o {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30%;
 }
 
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px) 1fr;
     gap: 16px;
 }
 
@@ -45,4 +110,8 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 70%;
+}
+
+.display-none {
+    display: none;
 }

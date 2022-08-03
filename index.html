@@ -11,17 +11,37 @@
     <header><h1>Tic Tac Toe</h1></header>
     <main>
         <div class="game-message"></div>
-        <div class="gameboard">
-                <div class="game-square" data-position="00"></div>
-                <div class="game-square" data-position="01"></div>
-                <div class="game-square" data-position="02"></div>
-                <div class="game-square" data-position="10"></div>
-                <div class="game-square" data-position="11"></div>
-                <div class="game-square" data-position="12"></div>
-                <div class="game-square" data-position="20"></div>
-                <div class="game-square" data-position="21"></div>
-                <div class="game-square" data-position="22"></div>
+        <div class="game-select">
+            <div class="player-selection">
+                <div class="player-mark-x"></div>
+                <div class="player-data">
+                    <label for="player1"></label>
+                    <input type="text" name="player1" id="player1" placeholder="Player 1">
+                </div>
+                <div class="player-vs">VS</div>
+                <div class="player-mark-o"></div>
+                <div class="player-data">
+                    <label for="player2"></label>
+                    <input type="text" name="player2" id="player2" placeholder="Player 2">
+                    <label for="playerAI" class="player-ai">
+                    <input type="checkbox" name="playerAI" id="playerAI">
+                    AI
+                    </label>
+                </div>
+                <button class="btn btn-new-game">New game</button>
             </div>
+        </div>
+        <div class="gameboard display-none">
+            <div class="game-square" data-position="00"></div>
+            <div class="game-square" data-position="01"></div>
+            <div class="game-square" data-position="02"></div>
+            <div class="game-square" data-position="10"></div>
+            <div class="game-square" data-position="11"></div>
+            <div class="game-square" data-position="12"></div>
+            <div class="game-square" data-position="20"></div>
+            <div class="game-square" data-position="21"></div>
+            <div class="game-square" data-position="22"></div>
+            <button class="btn btn-restart">Restart</button>
         </div>
     </main>
     <script src="./js/script.js"></script>
