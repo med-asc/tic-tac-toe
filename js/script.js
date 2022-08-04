@@ -20,6 +20,9 @@ const Game = (() => {
             this.htmlgameSelect = document.querySelector('.game-select');
             this.htmlNewGame = document.querySelector('.btn-new-game');
             this.htmlRestart = document.querySelector('.btn-restart');
+            this.htmlInputP1 = document.querySelector('#player1');
+            this.htmlInputP2 = document.querySelector('#player2');
+            this.htmlInputAI = document.querySelector('#playerAI');
         },
         newGame: function() {
             // Display gameboard and hide new game btn
@@ -47,10 +50,14 @@ const Game = (() => {
             });
 
             this.htmlNewGame.addEventListener('click', () => {
+                this.createPlayers();
                 this.newGame();
             });
 
             this.htmlRestart.addEventListener('click', () => {
+                this.htmlInputP1.value = '';
+                this.htmlInputP2.value = '';
+                this.htmlInputAI.checked = false;
                 this.htmlgameSelect.classList.remove('display-none');
                 this.htmlBoard.classList.add('display-none');
                 this.htmlMessage.textContent = '';
@@ -75,7 +82,8 @@ const Game = (() => {
                 }
             }
             if (this.gameOver) {
-                this.htmlMessage.textContent = 'Win!';
+                let winner = (this.moveCounter.counter % 2 === 0) ? this.players.p2.name : this.players.p1.name
+                this.htmlMessage.textContent = `${winner} wins!`;
             }
             if (this.moveCounter.counter === 9) {
                 this.htmlMessage.textContent = 'Draw!';
@@ -113,9 +121,16 @@ const Game = (() => {
             // Diagonal check
             if (flatBoard[0] && flatBoard[4] && flatBoard[8]) this.gameOver = true;
             if (flatBoard[2] && flatBoard[4] && flatBoard[6]) this.gameOver = true;
+        },
+        players: {},
+        createPlayers: function() {
+            this.players.p1 = {name: this.htmlInputP1.value || 'player 1', type: 'player'};
+            this.players.p2 = {name: this.htmlInputP2.value || 'player 2', type: 'player'};
+            if (this.htmlInputAI.checked) {
+                this.players.p2.name = `${this.players.p2.name} (computer)`;
+                this.players.p2.type = 'computer';
+            }
         }
-
-
     }
 
     gameboard.init();
