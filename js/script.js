@@ -5,7 +5,6 @@
 // - Add a move
 // - Announce winnder or draw?
 const Game = (() => {
-
     let gameboard = {
         gameboard: [],
         gameOver: false,
@@ -81,12 +80,12 @@ const Game = (() => {
                     }
                 }
             }
+            if (this.moveCounter.counter === 9) {
+                this.htmlMessage.textContent = 'Draw!';
+            }
             if (this.gameOver) {
                 let winner = (this.moveCounter.counter % 2 === 0) ? this.players.p2.name : this.players.p1.name
                 this.htmlMessage.textContent = `${winner} wins!`;
-            }
-            if (this.moveCounter.counter === 9) {
-                this.htmlMessage.textContent = 'Draw!';
             }
         },
         moveCounter: {
@@ -98,12 +97,29 @@ const Game = (() => {
         addMove: function(row, column) {
             if (!this.gameOver){
                 if (this.gameboard[row][column] === null) {
-                    let mark = (this.moveCounter.counter % 2 === 0) ? 'X' : 'O'
-                    this.gameboard[row][column] = mark;
-
-                    this.checkWinner(mark);
-                    this.moveCounter.addCount();
-                    this.render();
+                    let mark = (this.moveCounter.counter % 2 === 0) ? 'X' : 'O';
+                    // Disable new mark from player if p2 is computer and computer turn to move
+                    if ( (mark === 'X' || mark === 'O') && (this.players.p2.type !== 'computer') ) {
+                        this.gameboard[row][column] = mark;
+                        this.checkWinner(mark);
+                        this.moveCounter.addCount();
+                        this.render();
+                    } else if (mark === 'X' && this.players.p2.type === 'computer'){
+                        this.gameboard[row][column] = mark;
+                        this.checkWinner(mark);
+                        this.moveCounter.addCount();
+                        this.render();
+                        if (this.moveCounter.counter < 9) {
+                            this.ai.getMove();
+                        }
+                    } else {
+                        this.gameboard[row][column] = mark;
+                        this.checkWinner(mark);
+                        this.moveCounter.addCount();
+                        this.render();
+                    }
+                } else {
+                    return false;
                 }
             }
         },
@@ -130,18 +146,33 @@ const Game = (() => {
                 this.players.p2.name = `${this.players.p2.name} (computer)`;
                 this.players.p2.type = 'computer';
             }
+        },
+        ai: {
+            getEmptySquares: function() {
+                let emptySquares = [];
+                for (let i = 0; i < gameboard.gameboard.length; i++) {
+                    for (let j = 0; j < gameboard.gameboard[i].length; j++) {
+                        if (gameboard.gameboard[i][j] === null) {
+                            emptySquares.push([i,j]);
+                        }
+                    }
+                }
+                return emptySquares;
+            },
+            getMove: function() {
+                let emptySquares = this.getEmptySquares();
+                // Random position
+                let plannedMove = this.random(emptySquares.length);
+                let row = emptySquares[plannedMove][0];
+                let column = emptySquares[plannedMove][1];
+                gameboard.addMove(row, column);
+            },
+            random: function(x) {
+                return Math.floor(Math.random() * x);
+            }
         }
     }
 
     gameboard.init();
 
 })();
-
-
-// Player use cases:
-// - Create player
-// - Player type: Player or AI
-// - Player sign (X or O)
-const Player = (name, mark, type) => {
-    return {name, mark, type};
-}
